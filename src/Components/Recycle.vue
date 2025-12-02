@@ -5,7 +5,7 @@ export default {
   setup() {
     const router = useRouter()
 
-    // Updated bottles with short description and points
+    
     const bottles = [
       {
         id: 1,
@@ -59,7 +59,7 @@ export default {
 
     // Navigate to bottle details page
     function openDetails(id) {
-      router.push(`/bottle/${id}`)
+      router.push(`/bottle_details/${id}`)
     }
 
     return { bottles, openDetails }

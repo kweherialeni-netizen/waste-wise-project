@@ -5,7 +5,7 @@ export default {
   setup() {
     const router = useRouter()
     const goToRecycle = () => {
-      router.push('/recycle')
+      router.push('/Recycle')
     }
     return { goToRecycle }
   }
@@ -30,7 +30,7 @@ export default {
         large
         @click="goToRecycle"
       >
-        ♻ Start Recycling
+         Start Recycling
       </v-btn>
     </div>
   </div>

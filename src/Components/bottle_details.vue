@@ -1,94 +1,85 @@
-<!-- // <script>
-// import { useRoute, useRouter } from 'vue-router'
+<script>
+import { useRoute, useRouter } from 'vue-router'
 
-// export default {
-//   setup() {
-//     const route = useRoute()
-//     const router = useRouter()
+export default {
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
 
-//     // Get the bottle ID from URL
-//     const bottleId = Number(route.params.id)
+    const bottleId = Number(route.params.id)
 
-//     // Same list as the recycle page
-//     const bottles = [
-//       {
-//         id: 1,
-//         name: "Sprite Energy Drink",
-//         desc: "Bottle available for recycling and points",
-//         img: "/images/bottles/derrick-payton-s6xYsISI9Zk-unsplash.jpg"
-//       },
-//       {
-//         id: 2,
-//         name: "Coca-Cola",
-//         desc: "Bottle available for recycling",
-//         img: "/images/bottles/easylife-designs-IJlyaf4q0_s-unsplash.jpg"
-//       },
-//       {
-//         id: 3,
-//         name: "Mountain Dew",
-//         desc: "Bottle available for recycling",
-//         img: "/images/bottles/erik-mclean-5JdKoyIKWW4-unsplash.jpg"
-//       },
-//       {
-//         id: 4,
-//         name: "Wisers Beer",
-//         desc: "Bottle available for recycling",
-//         img: "/images/bottles/shen-liu-J-UKLgHEotw-unsplash.jpg"
-//       },
-//       {
-//         id: 5,
-//         name: "Pepsi",
-//         desc: "Bottle available for recycling",
-//         img: "/public/images/nikhil-82LJQZGwW5o-unsplash.jpg"
-//       }
-//     ]
+    const bottles = [
+      {
+        id: 1,
+        name: "Sprite Energy Drink",
+        desc: "Bottle available for recycling and points",
+        img: "/images/bottles/derrick-payton-s6xYsISI9Zk-unsplash.jpg"
+      },
+      {
+        id: 2,
+        name: "Coca-Cola",
+        desc: "Bottle available for recycling",
+        img: "/images/bottles/easylife-designs-IJlyaf4q0_s-unsplash.jpg"
+      },
+      {
+        id: 3,
+        name: "Mountain Dew",
+        desc: "Bottle available for recycling",
+        img: "/images/bottles/erik-mclean-5JdKoyIKWW4-unsplash.jpg"
+      },
+      {
+        id: 4,
+        name: "Wisers Beer",
+        desc: "Bottle available for recycling",
+        img: "/images/bottles/shen-liu-J-UKLgHEotw-unsplash.jpg"
+      },
+      {
+        id: 5,
+        name: "Pepsi",
+        desc: "Bottle available for recycling",
+        img: "/images/nikhil-82LJQZGwW5o-unsplash.jpg"
+      }
+    ]
 
-//     // Find bottle by ID
-//     const bottle = bottles.find(b => b.id === bottleId)
+    const bottle = bottles.find(b => b.id === bottleId)
 
-//     function recycleBottle() {
-//       alert(`You have recycled ${bottle.name}! Points added coming soon.`)
+    function recycleBottle() {
+      alert(`You have recycled ${bottle.name}! Points added coming soon.`)
+    }
 
-//       // Later we will send a POST request to Laravel API:
-//       // axios.post('/api/recycle', { bottle_id: bottle.id })
-//     }
+    return { bottle, recycleBottle, router }
+  }
+}
+</script>
 
-//     return { bottle, recycleBottle, router }
-//   }
-// }
-// </script>
+<template>
+  <v-container>
+    <v-btn color="grey" class="mb-4" @click="router.back()">← Back</v-btn>
 
-// <template>
-//   <v-container>
-//     <v-btn color="grey" class="mb-4" @click="router.back()">← Back</v-btn>
+    <v-card v-if="bottle" class="pa-4" elevation="8">
+      <v-img :src="bottle.img" height="350px" cover></v-img>
 
-//     <v-card v-if="bottle" class="pa-4" elevation="8">
-//       <v-img :src="bottle.img" height="350px" cover></v-img>
+      <v-card-title class="text-h5 mt-4">
+        {{ bottle.name }}
+      </v-card-title>
 
-//       <v-card-title class="text-h5 mt-4">
-//         {{ bottle.name }}
-//       </v-card-title>
+      <v-card-text class="text-body-1">
+        {{ bottle.desc }}
+      </v-card-text>
 
-//       <v-card-text class="text-body-1">
-//         {{ bottle.desc }}
-//       </v-card-text>
+      <v-btn
+        color="teal-darken-1"
+        large
+        block
+        class="mt-3"
+        @click="recycleBottle"
+      >
+         Recycle & Earn Points
+      </v-btn>
+    </v-card>
 
-//       <v-btn
-//         color="teal-darken-1"
-//         large
-//         block
-//         class="mt-3"
-//         @click="recycleBottle"
-//       >
-//         ♻ Recycle & Earn Points
-//       </v-btn>
-//     </v-card>
-
-//     <div v-else class="text-center text-h6">
-//       Bottle not found.
-//     </div>
-//   </v-container>
-// </template>
-
-// <style>
-// </style> -->
+    <div v-else class="text-center text-h6">
+      Bottle not found.
+    </div>
+  </v-container>
+</template>

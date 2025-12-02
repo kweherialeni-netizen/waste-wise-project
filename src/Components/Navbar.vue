@@ -13,11 +13,11 @@
     
     <!-- <v-btn to="/Stats"></v-btn>
     <v-btn to="/Aboutus"></v-btn> -->
-<!-- <v-btn to="/admin">Admin</v-btn>
+ <!-- <v-btn to="/admin">Admin</v-btn>
     <v-avatar v-if="isLoggedIn" to="/userprofile">
       <span class="text-h5 text-white">P</span>
-    </v-avatar> -->
+    </v-avatar> 
 
-    <!-- <v-btn v-else to="/login">Log In</v-btn> -->
-  </v-app-bar>
+     <v-btn v-else to="/login">Log In</v-btn> -->
+  </v-app-bar> 
 </template>
