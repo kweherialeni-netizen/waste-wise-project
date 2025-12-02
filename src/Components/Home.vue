@@ -39,7 +39,7 @@ export default {
 <style>
 .hero-card {
   position: relative;
-  background-image: url('public/images/ivan-bandura-hqnUYXsN5oY-unsplash.jpg');
+  background-image: url('images/ivan-bandura-hqnUYXsN5oY-unsplash.jpg');
   background-size: cover;
   background-position: center;
   min-height: 100vh;
