@@ -1,29 +1,30 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
-const emailAddress = ref(null);
-const password = ref(null);
+const emailAddress = ref("");
+const password = ref("");
 const showPassword = ref(false);
 
 const router = useRouter();
+const auth = useAuthStore(); // Pinia auth store
 
-function login() {
+// Updated login function to call backend
+async function login() {
   try {
-    let user = JSON.parse(localStorage.getItem("signUpData"));
+    // Call backend via auth store
+    await auth.login(emailAddress.value, password.value);
 
-    if (
-      user &&
-      emailAddress.value === user.email &&
-      password.value === user.password
-    ) {
-      localStorage.setItem("isLoggedIn", true);
-      router.push("/");
+    if (auth.isLoggedIn) {
+      router.push("/"); // Redirect to Home if login successful
     } else {
       console.log("Invalid credentials");
+      alert("Login failed: Invalid credentials");
     }
   } catch (err) {
-    console.error("Login process failed", err);
+    console.error("Login failed", err.response?.data || err);
+    alert("Login failed: " + (err.response?.data?.message || err.message));
   }
 }
 </script>
@@ -33,17 +34,19 @@ function login() {
     <v-row>
       <v-col>
         <v-card class="pa-6" width="600" color="teal">
-          <v-card-title>Log in</v-card-title>
+          <v-card-title>Log In</v-card-title>
 
+          <!-- Email -->
           <v-text-field
             v-model="emailAddress"
             label="Email Address"
             :rules="[
               (v) => !!v || 'Email is required',
-              (v) => /.+@.+\..+/.test(v) || 'Email must be valid',
+              (v) => /.+@.+\..+/.test(v) || 'Email must be valid'
             ]"
           />
 
+          <!-- Password -->
           <v-text-field
             v-model="password"
             label="Password"
@@ -52,29 +55,23 @@ function login() {
             @click:append="showPassword = !showPassword"
             :rules="[
               (v) => !!v || 'Password is required',
-              (v) => v.length >= 8 || 'Password must be at least 8 characters',
+              (v) => v.length >= 8 || 'Password must be at least 8 characters'
             ]"
             required
           />
-          <v-text-field  label="Confirm Password"       :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="showConfirmPassword ? 'text' : 'password'"
-                        @click:append="showConfirmPassword = !showConfirmPassword"
-                        :rules="[
-                            (v) => !!v || 'Please confirm your password',
-                            (v) => v === password || 'Passwords must match',
-                        ]"
-                        required></v-text-field>
 
           <v-card-text>
             Do not have an account?
             <router-link to="/signUp">Sign up</router-link>
           </v-card-text>
 
+          <!-- Login Button -->
           <v-card-actions>
             <v-btn color="white" variant="elevated" @click="login">
               Log in
             </v-btn>
           </v-card-actions>
+
         </v-card>
       </v-col>
     </v-row>

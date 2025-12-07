@@ -11,7 +11,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 import * as labComponents from 'vuetify/labs/components'
-// import  createVuetify from
+
 
 const vuetify = createVuetify({
   components:{
@@ -23,11 +23,6 @@ const vuetify = createVuetify({
   },
 
 })
-
-
-
-
-
 
 const app = createApp(App)
 
