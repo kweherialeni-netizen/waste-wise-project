@@ -10,7 +10,7 @@ import Signup from '@/Components/Signup.vue'
  import Dashboard from '@/Components/Dashboard.vue'
 import MyChart from '@/Components/myChart.vue'
 // import Stats from '@/Components/Stats.vue'
-// import Profile from '@/Components/Profile.vue'
+ import Profile from '@/Components/Profile.vue'
  import Admin from '@/Components/Admin.vue'
 import myChart from '@/Components/myChart.vue'
 import bottle_details from '@/Components/bottle_details.vue'
@@ -32,7 +32,7 @@ const router = createRouter({
      {name: 'Recycle', path:'/Recycle',component:Recycle},
 {name: 'Sign up', path:'/Signup',component:Signup},
 // {name: 'Stats', path:'/Stats',component:Stats},
-// {name: 'Profile', path:'/Profile',component:Profile},
+ {name: 'Profile', path:'/Profile',component:Profile},
 {name: 'Admin', path:'/Admin',component:Admin},
 {name:'MyChart' , path:'/myChart',component: myChart},
 {name:'Bottle details' , path:'/bottle_details/:id',component: bottle_details},

@@ -35,7 +35,7 @@ function logout() {
     <!-- LOGGED IN -->
     <template v-else>
       <!-- User avatar -->
-      <router-link to="/userprofile">
+      <router-link to="/Profile">
         <v-avatar class="mr-4" color="white">
           <span class="text-h5 text-teal-darken-3">
             {{ auth.user?.name?.charAt(0).toUpperCase() || 'U' }}

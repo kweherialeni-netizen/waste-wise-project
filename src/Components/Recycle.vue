@@ -1,68 +1,36 @@
 <script>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 export default {
   setup() {
     const router = useRouter()
+    const bottles = ref([])
+    const loading = ref(true)
 
-    
-    const bottles = [
-      {
-        id: 1,
-        name: "Sprite Energy Drink",
-        type: "Plastic Bottle",
-        points: 5,
-        desc: "Bottle available for recycling and points",
-        img: "images/bottles/derrick-payton-s6xYsISI9Zk-unsplash.jpg"
-      },
-      {
-        id: 2,
-        name: "Coca-Cola",
-        type: "Plastic Bottle",
-        points: 5,
-        desc: "Bottle available for recycling",
-        img: "images/bottles/easylife-designs-IJlyaf4q0_s-unsplash.jpg"
-      },
-      {
-        id: 3,
-        name: "Mountain Dew",
-        type: "Glass Bottle",
-        points: 8,
-        desc: "Bottle available for recycling",
-        img: "images/bottles/erik-mclean-5JdKoyIKWW4-unsplash.jpg"
-      },
-      {
-        id: 4,
-        name: "Wisers Beer",
-        type: "Glass Bottle",
-        points: 10,
-        desc: "Bottle available for recycling",
-        img: "images/bottles/shen-liu-J-UKLgHEotw-unsplash.jpg"
-      },
-      {
-        id: 5,
-        name: "Pepsi",
-        type: "Plastic Bottle",
-        points: 5,
-        desc: "Bottle available for recycling",
-        img: "images/nikhil-82LJQZGwW5o-unsplash.jpg"
-      },
-       {
-        id: 6,
-        name: "Coca cola",
-        type: "Plastic Bottle",
-        points: 5,
-        desc: "Bottle available for recycling",
-        img: "images/bottles/easylife-designs-IJlyaf4q0_s-unsplash.jpg"
+    // Fetch bottles from backend
+    const fetchBottles = async () => {
+      loading.value = true
+      try {
+        const response = await axios.get('http://localhost:8000/api/items')
+        bottles.value = response.data.data  // backend returns {data: [...]}
+      } catch (err) {
+        console.error('Failed to fetch bottles:', err)
+      } finally {
+        loading.value = false
       }
-    ]
+    }
 
     // Navigate to bottle details page
-    function openDetails(id) {
+    const openDetails = (id) => {
+      if (!id) return
       router.push(`/bottle_details/${id}`)
     }
 
-    return { bottles, openDetails }
+    onMounted(fetchBottles)
+
+    return { bottles, openDetails, loading }
   }
 }
 </script>
@@ -92,7 +60,6 @@ export default {
             {{ bottle.name }}
           </v-card-title>
 
-          <!-- Short type and points -->
           <v-card-subtitle class="white--text">
             {{ bottle.type }} • {{ bottle.points }} Points
           </v-card-subtitle>
@@ -100,6 +67,14 @@ export default {
           <v-card-text class="white--text">
             {{ bottle.desc }}
           </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="loading">
+      <v-col>
+        <v-card class="pa-4" elevation="6">
+          Loading bottles...
         </v-card>
       </v-col>
     </v-row>

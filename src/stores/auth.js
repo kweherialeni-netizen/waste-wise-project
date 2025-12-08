@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import api from '@/services/api' // <- import the api.js service
+import api from '@/services/api' // your axios instance
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -24,13 +24,20 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('token', this.token)
       } catch (error) {
         console.error('Login failed:', error.response?.data || error)
+        throw error
       }
     },
 
-    // Register user
-    async register(name, email, password) {
+    // Register user with password confirmation
+    async register(name, email, password, password_confirmation = null) {
       try {
-        const response = await api.post('/register', { name, email, password })
+        const response = await api.post('/register', {
+          name,
+          email,
+          password,
+          password_confirmation: password_confirmation || password, // auto-match if not provided
+        })
+
         this.user = response.data.user
         this.token = response.data.token
 
@@ -39,6 +46,7 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('token', this.token)
       } catch (error) {
         console.error('Registration failed:', error.response?.data || error)
+        throw error
       }
     },
 
