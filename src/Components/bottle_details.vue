@@ -92,28 +92,29 @@ export default {
     }
 
     const recycleBottle = async () => {
-      if (!bottle.value) return
-      try {
-        const response = await axios.post(
-          `http://localhost:8000/api/items/${bottle.value.id}/recycle`,
-          {},
-          {
-            headers: { Authorization: `Bearer ${auth.token}` }
-          }
-        )
-
-        // Update auth store and localStorage for instant profile update
-        if (auth.user) {
-          auth.user.points = response.data.points
-          localStorage.setItem('user', JSON.stringify(auth.user))
-        }
-
-        alert(response.data.message)
-      } catch (err) {
-        console.error(err)
-        alert('Failed to recycle bottle. Please try again.')
+  if (!bottle.value) return
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/api/items/${bottle.value.id}/recycle`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${auth.token}` }
       }
+    )
+
+    // Update auth store and localStorage for instant profile update
+    if (auth.user) {
+      auth.user.points = response.data.user_points  // <-- changed here
+      localStorage.setItem('user', JSON.stringify(auth.user))
     }
+
+    alert(response.data.message)
+  } catch (err) {
+    console.error(err)
+    alert('Failed to recycle bottle. Please try again.')
+  }
+}
+
 
     onMounted(fetchBottle)
 

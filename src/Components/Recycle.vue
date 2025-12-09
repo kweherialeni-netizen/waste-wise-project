@@ -2,22 +2,19 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-import { useAuthStore } from "@/stores/auth";
 
 export default {
   setup() {
     const router = useRouter()
     const bottles = ref([])
     const loading = ref(true)
-    const userPoints = ref(0) // display user's points
-    const auth = useAuthStore();
 
     // Fetch bottles from backend
     const fetchBottles = async () => {
       loading.value = true
       try {
         const response = await axios.get('http://localhost:8000/api/items')
-        bottles.value = response.data.data
+        bottles.value = response.data.data  // backend returns {data: [...]}
       } catch (err) {
         console.error('Failed to fetch bottles:', err)
       } finally {
@@ -31,51 +28,16 @@ export default {
       router.push(`/bottle_details/${id}`)
     }
 
-    // Recycle a bottle
-    const recycleBottle = async (id) => {
-      try {
-        const token = localStorage.getItem('token') 
-
-        const response = await axios.post(
-          `http://localhost:8000/api/items/${id}/recycle`,
-          {},
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-
-        alert(response.data.message)
-        userPoints.value = response.data.user_points
-
-        // Update auth store so profile shows latest points
-        if (auth.user) {
-          auth.user.points = response.data.user_points
-        }
-
-        // Refresh bottles list if needed
-        await fetchBottles()
-      } catch (err) {
-        console.error('Failed to recycle bottle:', err.response?.data || err)
-        alert(err.response?.data?.message || 'Recycle failed')
-      }
-    }
-
     onMounted(fetchBottles)
 
-    return { bottles, openDetails, loading, recycleBottle, userPoints }
+    return { bottles, openDetails, loading }
   }
 }
 </script>
 
 <template>
   <v-container>
-    <v-row v-if="loading">
-      <v-col>
-        <v-card class="pa-4" elevation="6">
-          Loading bottles...
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <v-row v-else>
+    <v-row>
       <v-col
         v-for="bottle in bottles"
         :key="bottle.id"
@@ -86,6 +48,7 @@ export default {
           color="teal"
           class="pa-2 hover-card"
           elevation="6"
+          @click="openDetails(bottle.id)"
         >
           <v-img
             :src="bottle.img"
@@ -104,23 +67,14 @@ export default {
           <v-card-text class="white--text">
             {{ bottle.desc }}
           </v-card-text>
-
-          <v-card-actions>
-            <v-btn color="primary" @click.stop="recycleBottle(bottle.id)">
-              Recycle
-            </v-btn>
-            <v-btn text color="white" @click="openDetails(bottle.id)">
-              Details
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="loading">
       <v-col>
         <v-card class="pa-4" elevation="6">
-          Your Points: {{ userPoints }}
+          Loading bottles...
         </v-card>
       </v-col>
     </v-row>
