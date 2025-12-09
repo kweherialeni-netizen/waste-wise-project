@@ -12,16 +12,20 @@ function logout() {
 </script>
 
 <template>
-  <v-app-bar color="teal-darken-3">
+  <v-app-bar color="teal-darken-3" dark>
     <v-app-bar-title>Waste Wise</v-app-bar-title>
 
     <!-- Navigation Links -->
     <v-btn to="/">Home</v-btn>
     <v-btn to="/Recycle">Recycle</v-btn>
-    <v-btn to="/Dashboard">Dashboard</v-btn>
 
-    <!-- Admin only when logged in -->
-    <v-btn v-if="auth.isLoggedIn" to="/admin">Admin</v-btn>
+    <!-- Dashboard visible to all logged-in users -->
+    <v-btn v-if="auth.isLoggedIn" to="/Dashboard">Dashboard</v-btn>
+
+    <!-- Admin only when logged in AND is admin -->
+    <v-btn v-if="auth.isLoggedIn && auth.user?.role === 'admin'" to="/admin">
+      Admin
+    </v-btn>
 
     <!-- Spacer pushes login/avatar to right -->
     <v-spacer></v-spacer>
@@ -48,3 +52,9 @@ function logout() {
     </template>
   </v-app-bar>
 </template>
+
+<style scoped>
+.v-btn {
+  margin-left: 8px;
+}
+</style>

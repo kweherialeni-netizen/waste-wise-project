@@ -5,21 +5,27 @@ import axios from "axios";
 
 const auth = useAuthStore();
 
-// Reactive points bound directly to auth store
+// Reactive points bound to auth store
 const points = computed(() => auth.user?.points || 0);
 
 const transactions = ref([]);
 const loading = ref(true);
 const error = ref(null);
 
-// Fetch transaction history
+// Fetch transaction history and update points in auth store
 onMounted(async () => {
   try {
     loading.value = true;
     const res = await axios.get("/api/profile", {
       headers: { Authorization: `Bearer ${auth.token}` }
     });
-    transactions.value = res.data.data
+
+    transactions.value = res.data.data;
+
+    // Update auth store points so UI reflects latest
+    if (auth.user) {
+      auth.user.points = res.data.points;
+    }
   } catch (err) {
     console.error("Failed to fetch profile", err);
     error.value = "Failed to load profile data.";
